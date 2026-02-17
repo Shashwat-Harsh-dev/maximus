@@ -1,24 +1,25 @@
 # Use Ubuntu 22.04
 FROM ubuntu:22.04
 
+# Prevent interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install basic tools
+# Install useful CLI tools
 RUN apt-get update && \
-    apt-get install -y bash curl vim git python3 python3-pip net-tools && \
+    apt-get install -y \
+        bash \
+        curl \
+        vim \
+        git \
+        python3 \
+        python3-pip && \
     rm -rf /var/lib/apt/lists/*
 
-# Install a lightweight web-based terminal: wetty
-RUN pip3 install wetty
-
-# Create working directory for static site
+# Set working directory
 WORKDIR /workspace
 
-# Copy your static site into container
-COPY ./static ./static
+# Expose port 8000 (or any port you want)
+EXPOSE 8000
 
-# Expose ports for web server and wetty CLI
-EXPOSE 8080
-
-# Start Wetty CLI on / terminal and serve static site
-CMD ["wetty", "--port", "8080", "--command", "/bin/bash"]
+# Default command: keep container running
+CMD ["tail", "-f", "/dev/null"]
