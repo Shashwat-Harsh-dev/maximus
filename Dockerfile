@@ -28,19 +28,23 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install tools and Python
 RUN apt-get update && \
-    apt-get install -y bash curl vim git python3 python3-pip && \
-    pip3 install fastapi uvicorn && \
+    apt-get install -y \
+        bash \
+        curl \
+        wget \
+        git \
+        vim \
+        iputils-ping \
+        dnsutils \
+        net-tools \
+        traceroute \
+        nmap \
+        ttyd && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /workspace
 
-# Copy your app code into the container (optional)
-# COPY ./app /workspace/app
-
-# Expose port
 EXPOSE 8000
 
-# Start FastAPI server on all interfaces
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["ttyd", "-p", "8000", "bash"]
